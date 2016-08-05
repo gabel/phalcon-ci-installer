@@ -1,7 +1,6 @@
 language: php
 env:
   global:
-    - secure: "PI2UeE4TAs/O2w8d/UVXVN2k5vGDrF4XfzFQ18/AZ4EUG9SeO3DIGhVoEEeVFa0+7dRLNGmHDuq5AAfgl4SNPMoGNL1xbbTozK4bcBGkF3lSx3K9G9zp39oHZG+raXnWzfpW2oDCvxkpi5gezHv2D22v8q1iEoY+U0n02lwAsLkosUGzHRBxU1NznwoUwqV1jgWZcoK76Gz434uoBg1k1t9ehQQSWUa2G16cT52PtHQU6n7N6VGEfO47GHt96vKzy8fM3/wLYLOwJ3kkbKbEC+Aa78a/9YY9yySWCmuF8iMyuVlx/vCNG2+1XLFoxuE1Uh1BpUZ95NNV9wxsu0ekDl1yEjM1ioiLf7V0LgPaw0cYgc0oyLws0BKQ6tRg3Gutoh5ANjy2duw5XkpuE8WvpbBV8TiykLfSgerGgmYljpdBwot0XFh5VZrYfsgjvcd7pwo3cONlWkv5OWCTLPpBJ3BcmK8SchYdQ0pm7b0esAqCfE9REh62sv173Xj5QgGNtek2iOKxCdbE0cbEft9eHsy0pwhHccmJR5QvXToDMEvgpDj0om3LwBldsM+5LGbhi5RtObHQ99AgRHV1WFIhyTMEaK64BzRg4WG4Xk+gyejfrvbVZlfFQp1FHy1MulfzTZSTPqKFTpWmDXOyVMWLtORT1oqs3N6mNl1+qxtnLWg="
     - http_proxy: "http://proxy.wdf.sap.corp:8080"
     - HTTP_PROXY: "http://proxy.wdf.sap.corp:8080"
     - https_proxy: "http://proxy.wdf.sap.corp:8080"
@@ -28,9 +27,8 @@ before_install:
 script:
   - php -r "echo \Phalcon\Version::get();"
   - vendor/bin/phpunit
+  - DATE=`date +%Y-%m-%d_%H-%M-%S`; curl -v 2 --noproxy github.wdf.sap.corp -X POST --insecure -H "Content-Type:application/x-sharedlib" -H "Authorization:token $GITHUB_TOKEN" --data-binary /home/travis/.phpenv/versions/7.0.9/include/php/phalcon.so "https://github.wdf.sap.corp/api/uploads/repos/d060690/phalcon-ci-installer/releases/6387/assets?name=phalcon_$DATE.so"
 
 notifications:
   email: false
 
-after:
-  - curl -X --insecure POST --header "Content-Type:application/x-sharedlib" --data-binary /home/travis/.phpenv/versions/7.0.9/include/php/phalcon.so "https://github.wdf.sap.corp/api/v3/repos/d060690/phalcon-ci-installer/releases/6387/assets?name=phalcon.so&access_token=f6ae6ac9bb4ca486bc3e7f5f6357f2a31aab850c"
